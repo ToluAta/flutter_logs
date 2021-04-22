@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 
 enum DirectoryStructure { FOR_DATE, FOR_EVENT, SINGLE_FILE_FOR_DAY }
@@ -188,8 +187,8 @@ class FlutterLogs {
       String subTag = "",
       String logMessage = "",
       LogLevel level = LogLevel.INFO,
-      Exception? exception = null,
-      Error? error = null,
+      Exception? exception,
+      Error? error,
       String errorMessage = ""}) async {
     if (exception != null) {
       final String? result =
@@ -211,7 +210,7 @@ class FlutterLogs {
         'e': error.stackTrace.toString()
       });
       printDebugMessage(result, 2);
-    } else if (errorMessage != null && errorMessage.isNotEmpty) {
+    } else if (errorMessage.isNotEmpty) {
       final String? result =
           await channel.invokeMethod('logThis', <String, dynamic>{
         'tag': tag,
@@ -367,10 +366,6 @@ class FlutterLogs {
   }
 
   static String _getLogLevel(LogLevel type) {
-    return type.toString().split('.').last;
-  }
-
-  static String _getLogType(LogType type) {
     return type.toString().split('.').last;
   }
 
